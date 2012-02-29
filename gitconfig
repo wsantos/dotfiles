@@ -1,0 +1,18 @@
+[core]
+	excludesfile = /Users/wsantos/.gitignore
+	editor = mvim
+[alias]
+	st = status
+	ci = commit
+	co = checkout
+	br = branch
+[user]
+	name = Waldecir Santos
+	email = waldecir@gmail.com
+[color]
+	branch = auto
+	diff = auto
+	interactive = auto
+	status = auto
+[merge]
+	tool = opendiff
