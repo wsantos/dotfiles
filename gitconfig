@@ -1,6 +1,6 @@
 [core]
-	excludesfile = /Users/wsantos/.gitignore
-	editor = mvim
+	excludesfile = /Users/wsantos/.gitignore_global
+	editor = vim
 [alias]
 	st = status
 	ci = commit
@@ -15,4 +15,12 @@
 	interactive = auto
 	status = auto
 [merge]
-	tool = opendiff
+	tool = kdiff3
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[credential]
+	helper = osxkeychain

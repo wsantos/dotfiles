@@ -4,6 +4,8 @@
         set nocompatible
         filetype off
 
+        set textwidth=80
+        set colorcolumn=+1
     " }
 
     " Setup Bundle Support {
@@ -19,6 +21,12 @@
         Bundle 'gmarik/vundle'
         Bundle 'MarcWeber/vim-addon-mw-utils'
         Bundle 'tomtom/tlib_vim'
+        if executable('ack-grep')
+            let g:ackprg="ack-grep -H --nocolor --nogroup --column"
+            Bundle 'mileszs/ack.vim'
+        elseif executable('ack')
+            Bundle 'mileszs/ack.vim'
+        endif
 
     " General
         Bundle 'scrooloose/nerdtree'
@@ -31,17 +39,18 @@
     " Cores
         Bundle 'spf13/vim-colors'
         Bundle 'flazz/vim-colorschemes'
+        Bundle 'shinzui/vim-idleFingers'
         Bundle 'altercation/vim-colors-solarized'
+        Bundle 'nanotech/jellybeans.vim'
 
     " General Programming
         Bundle 'scrooloose/syntastic'
         Bundle 'garbas/vim-snipmate'
-        Bundle 'honza/snipmate-snippets'
+        Bundle 'honza/vim-snippets'
         Bundle 'tpope/vim-fugitive'
         Bundle 'scrooloose/nerdcommenter'
         Bundle 'godlygeek/tabular'
         Bundle 'majutsushi/tagbar'
-        Bundle 'spf13/snipmate-snippets'
         Bundle 'spf13/snipmate-snippets'
         Bundle 'tpope/vim-fugitive'
         Bundle 'Shougo/neocomplcache'
@@ -69,6 +78,7 @@
         Bundle 'spf13/vim-markdown'
         Bundle 'tpope/vim-cucumber'
         Bundle 'Puppet-Syntax-Highlighting'
+        Bundle 'mattn/pastebin-vim'
 
 " }
 
@@ -79,8 +89,9 @@
     endif
     filetype plugin indent on   " Automatically detect file types.
     syntax on                   " syntax highlighting
-    set mouse=a                 " automatically enable mouse usage
+    "set mouse=a                 " automatically enable mouse usage
     scriptencoding utf-8
+    set fileencodings=utf-8
     autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
     " always switch to the current file directory.
 
@@ -106,11 +117,15 @@
 " }
 
 " Vim UI {
-    color solarized                 " load a colorscheme
-        let g:solarized_termtrans=1
-        let g:solarized_termcolors=256
-        let g:solarized_contrast="high"
-        let g:solarized_visibility="high"
+    let g:pastebin_api_dev_key = "764eb01a9d609190a0ac25dab80f1d9c"
+    let g:pastebin_api_user_name = "wsantos"
+    let g:pastebin_api_user_password = "dany22"
+    color jellybeans
+    "color solarized                 " load a colorscheme
+        "let g:solarized_termtrans=1
+        "let g:solarized_termcolors=256
+        "let g:solarized_contrast="high"
+        "let g:solarized_visibility="high"
     set tabpagemax=15               " only show 15 tabs
     set showmode                    " display the current mode
 
@@ -150,8 +165,11 @@
     set scrolljump=5                " lines to scroll when cursor leaves screen
     set scrolloff=3                 " minimum lines to keep above and below cursor
     set foldenable                  " auto fold code
+    set wildignore=*.swp,*.bak,*.pyc,*.class
     set list
     set listchars=tab:,.,trail:.,extends:#,nbsp:. " Highlight problematic whitespace
+    set nobackup
+    set noswapfile
 
 
 " }
@@ -164,7 +182,7 @@
     set tabstop=4                   " an indentation every four columns
     set softtabstop=4               " let backspace delete indent
     "set matchpairs+=<:>                " match, to be used with % 
-    set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
+    set pastetoggle=<F2>           " pastetoggle (sane indentation on pastes)
     "set comments=sl:/*,mb:*,elx:*/  " auto format comment blocks
     " Remove trailing whitespaces and ^M chars
     autocmd FileType c,cpp,java,php,js,python,twig,xml,yml autocmd BufWritePre <buffer> :call setline(1,map(getline(1,"$"),'substitute(v:val,"\\s\\+$","","")'))
@@ -252,14 +270,28 @@
 " }
 
 " Plugins {
+    " ctrlp {
+        set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.*~,*.pyc
+    " }
+
+    " Misc {
+        let g:NERDShutUp=1
+        let b:match_ignorecase = 1
+    " }
 
     " vim-powerline {
-        let g:Powerline_symbols = 'fancy'
+        let g:Powerline_symbols = 'compatible'
     "
     " }
 
     " Ctags {
         set tags=./tags;/,~/.vimtags
+    " }
+
+    " AutoCloseTag {
+        " Make it so AutoCloseTag works for xml and xhtml files as well
+        au FileType xhtml,xml ru ftplugin/html/autoclosetag.vim
+        nmap <Leader>ac <Plug>ToggleAutoCloseMappings
     " }
 
     " EasyTags {
@@ -292,7 +324,10 @@
      " }
 
      " PyMode {
-        let g:pymode_lint_checker = "pyflakes"
+        let g:pymode_lint_checker = "pyflakes,pep8,mccabe"
+        let g:pymode_folding = 0
+        let g:pymode_lint_cwindow = 0
+        let g:pymode_lint_hold = 0
      " }
 
      " TagBar {
@@ -367,5 +402,46 @@
      " }
 
 " }
+
+
+"if &term =~ "xterm"
+    ""256 color --
+    "let &t_Co=256
+    "" restore screen after quitting
+    "set t_ti=ESC7ESC[rESC[?47h t_te=ESC[?47lESC8
+    "if has("terminfo")
+        "let &t_Sf="\ESC[3%p1%dm"
+        "let &t_Sb="\ESC[4%p1%dm"
+    "else
+        "let &t_Sf="\ESC[3%dm"
+        "let &t_Sb="\ESC[4%dm"
+    "endif
+"endif
+
+
+" Function to activate a virtualenv in the embedded interpreter for
+" omnicomplete and other things like that.
+function LoadVirtualEnv(path)
+    let activate_this = a:path . '/bin/activate_this.py'
+    if getftype(a:path) == "dir" && filereadable(activate_this)
+        python << EOF
+import vim
+activate_this = vim.eval('l:activate_this')
+execfile(activate_this, dict(__file__=activate_this))
+EOF
+    endif
+endfunction
+
+" Load up a 'stable' virtualenv if one exists in ~/.virtualenv
+let defaultvirtualenv = $HOME . "/.virtualenvs/stable"
+
+" Only attempt to load this virtualenv if the defaultvirtualenv
+" actually exists, and we aren't running with a virtualenv active.
+if has("python")
+    if empty($VIRTUAL_ENV) && getftype(defaultvirtualenv) == "dir"
+        call LoadVirtualEnv(defaultvirtualenv)
+    endif
+endif
+
 
 

@@ -43,14 +43,14 @@ map! <D-9> <C-O>:tabn 9<CR>
 set visualbell
 
 set background=dark
-let g:solarized_termtrans=1
-let g:solarized_termcolors=256
-let g:solarized_contrast="high"
-let g:solarized_visibility="high"
-colorscheme solarized
+"let g:solarized_termtrans=1
+"let g:solarized_termcolors=256
+"let g:solarized_contrast="high"
+"let g:solarized_visibility="high"
+"colorscheme idleFingers
 "let g:zenburn_force_dark_Background=1
 " set guifont=ProggyCleanTTSZ:h16
-set guifont=Inconsolata\ for\ Powerline:h14
+set guifont=Inconsolata:h14
 set background=dark
 "set noantialias
 
