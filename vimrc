@@ -52,7 +52,6 @@
         Bundle 'godlygeek/tabular'
         Bundle 'majutsushi/tagbar'
         Bundle 'spf13/snipmate-snippets'
-        Bundle 'tpope/vim-fugitive'
         Bundle 'Shougo/neocomplcache'
         Bundle 'kien/ctrlp.vim'
         Bundle 'tpope/vim-surround'
@@ -60,10 +59,12 @@
 
     " Python
         " Pick either python-mode or pyflakes & pydoc
-        Bundle 'klen/python-mode'
+        "Bundle 'klen/python-mode'
         Bundle 'python.vim'
         Bundle 'python_match.vim'
-        Bundle 'pythoncomplete'
+        Bundle 'davidhalter/jedi-vim'
+        Bundle 'tell-k/vim-autopep8'
+        "Bundle 'pythoncomplete'
 
     " Javascript
         Bundle 'leshill/vim-json'
@@ -272,6 +273,10 @@
 " Plugins {
     " ctrlp {
         set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.*~,*.pyc
+        set wildignore+=*/coverage/*
+        set wildignore+=*/node_modules/*
+        let g:ctrlp_regexp = 1
+
     " }
 
     " Misc {
@@ -317,6 +322,8 @@
         let NERDTreeQuitOnOpen=1
         let NERDTreeShowHidden=1
         let NERDTreeKeepTreeInNewTab=1
+
+        let g:nerdtree_tabs_open_on_gui_startup=0
     " }
 
      " JSON {
@@ -324,10 +331,10 @@
      " }
 
      " PyMode {
-        let g:pymode_lint_checker = "pyflakes,pep8,mccabe"
-        let g:pymode_folding = 0
-        let g:pymode_lint_cwindow = 0
-        let g:pymode_lint_hold = 0
+        "let g:pymode_lint_checker = "pyflakes,pep8,mccabe"
+        "let g:pymode_folding = 0
+        "let g:pymode_lint_cwindow = 0
+        "let g:pymode_lint_hold = 0
      " }
 
      " TagBar {
@@ -353,6 +360,7 @@
 
         " AutoComplPop like behavior.
         let g:neocomplcache_enable_auto_select = 1
+        let g:neocomplcache_disable_auto_complete = 1
 
         " SuperTab like snippets behavior.
         imap <expr><TAB> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>"
@@ -381,7 +389,9 @@
         autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
         autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
         autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-        autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+        "autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+        autocmd FileType python setlocal completeopt+=longest,preview
+        autocmd FileType python setlocal completeopt-=preview
         autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
         " Enable heavy omni completion.
@@ -419,29 +429,17 @@
 "endif
 
 
-" Function to activate a virtualenv in the embedded interpreter for
-" omnicomplete and other things like that.
-function LoadVirtualEnv(path)
-    let activate_this = a:path . '/bin/activate_this.py'
-    if getftype(a:path) == "dir" && filereadable(activate_this)
-        python << EOF
+" Add the virtualenv's site-packages to vim path
+if has('python')
+py << EOF
+import os.path
+import sys
 import vim
-activate_this = vim.eval('l:activate_this')
-execfile(activate_this, dict(__file__=activate_this))
+if 'VIRTUAL_ENV' in os.environ:
+    project_base_dir = os.environ['VIRTUAL_ENV']
+    sys.path.insert(0, project_base_dir)
+    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+    execfile(activate_this, dict(__file__=activate_this))
 EOF
-    endif
-endfunction
-
-" Load up a 'stable' virtualenv if one exists in ~/.virtualenv
-let defaultvirtualenv = $HOME . "/.virtualenvs/stable"
-
-" Only attempt to load this virtualenv if the defaultvirtualenv
-" actually exists, and we aren't running with a virtualenv active.
-if has("python")
-    if empty($VIRTUAL_ENV) && getftype(defaultvirtualenv) == "dir"
-        call LoadVirtualEnv(defaultvirtualenv)
-    endif
 endif
-
-
 
