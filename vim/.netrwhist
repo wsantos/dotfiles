@@ -1,7 +1,5 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =5
-let g:netrw_dirhist_1='/Users/wsantos/.oh-my-zsh/plugins/django'
-let g:netrw_dirhist_2='/Users/wsantos/.oh-my-zsh/plugins/extract'
-let g:netrw_dirhist_3='/Users/wsantos/.oh-my-zsh/plugins/git'
-let g:netrw_dirhist_4='/Users/wsantos/.oh-my-zsh/plugins/github'
-let g:netrw_dirhist_5='/Users/wsantos/.oh-my-zsh/plugins/osx'
+let g:netrw_dirhist_cnt =3
+let g:netrw_dirhist_1='/Users/wsantos/.ipython'
+let g:netrw_dirhist_2='/Users/wsantos/.ipython/profile_default'
+let g:netrw_dirhist_3='/Users/wsantos/.ipython/profile_default/startup'

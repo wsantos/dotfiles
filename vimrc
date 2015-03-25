@@ -1,137 +1,102 @@
-" Enviroment {
+" Enviroment before plugin add {
     " Basics {
 
         set nocompatible
         filetype off
 
-        set textwidth=80
-        set colorcolumn=+1
+        "set textwidth=80
+        "set colorcolumn=+1
     " }
 
-    " Setup Bundle Support {
+    " Setup Plugin Support START{
     " The next two lines ensure that the ~/.vim/bundle/ system works
-        set rtp+=~/.vim/bundle/vundle/
-        call vundle#rc()
+        set rtp+=~/.vim/bundle/Vundle.vim
+        call vundle#begin()
     " }
 " }
 
 " Bundles {
-    " Deps
-
-        Bundle 'gmarik/vundle'
-        Bundle 'MarcWeber/vim-addon-mw-utils'
-        Bundle 'tomtom/tlib_vim'
-        if executable('ack-grep')
-            let g:ackprg="ack-grep -H --nocolor --nogroup --column"
-            Bundle 'mileszs/ack.vim'
-        elseif executable('ack')
-            Bundle 'mileszs/ack.vim'
-        endif
+    " Dependencies
+        Plugin 'gmarik/Vundle.vim'
+        Plugin 'MarcWeber/vim-addon-mw-utils'
+        Plugin 'tomtom/tlib_vim'
 
     " General
-        Bundle 'scrooloose/nerdtree'
-        Bundle 'Lokaltog/vim-powerline'
-        Bundle 'Lokaltog/vim-easymotion'
-        Bundle 'jistr/vim-nerdtree-tabs'
-        Bundle 'matchit.zip'
-        Bundle 'nathanaelkane/vim-indent-guides'
+        Plugin 'Lokaltog/vim-easymotion'
+        Plugin 'bling/vim-airline' " Status line
+        Plugin 'scrooloose/syntastic'	" Show erros
+        Plugin 'kien/ctrlp.vim'
+        Plugin 'JazzCore/ctrlp-cmatcher'
+        Plugin 'tpope/vim-surround'
+        Plugin 'scrooloose/nerdcommenter'
+        if executable('ag')
+            let g:ackprg="ag -U --vimgrep"
+            Plugin 'mileszs/ack.vim'
+        elseif executable('ack')
+            Plugin 'mileszs/ack.vim'
+        endif
+        Plugin 'tpope/vim-fugitive'
+        Plugin 'jeetsukumaran/vim-buffergator'
+        Plugin 'nathanaelkane/vim-indent-guides'
 
-    " Cores
-        Bundle 'spf13/vim-colors'
-        Bundle 'flazz/vim-colorschemes'
-        Bundle 'shinzui/vim-idleFingers'
-        Bundle 'altercation/vim-colors-solarized'
-        Bundle 'nanotech/jellybeans.vim'
-
-    " General Programming
-        Bundle 'scrooloose/syntastic'
-        Bundle 'garbas/vim-snipmate'
-        Bundle 'honza/vim-snippets'
-        Bundle 'tpope/vim-fugitive'
-        Bundle 'scrooloose/nerdcommenter'
-        Bundle 'godlygeek/tabular'
-        Bundle 'majutsushi/tagbar'
-        Bundle 'spf13/snipmate-snippets'
-        Bundle 'Shougo/neocomplcache'
-        Bundle 'kien/ctrlp.vim'
-        Bundle 'tpope/vim-surround'
-
+    " Snippets
+        Plugin 'SirVer/ultisnips'
+        Plugin 'honza/vim-snippets'
 
     " Python
-        " Pick either python-mode or pyflakes & pydoc
-        "Bundle 'klen/python-mode'
-        Bundle 'python.vim'
-        Bundle 'python_match.vim'
-        Bundle 'davidhalter/jedi-vim'
-        Bundle 'tell-k/vim-autopep8'
-        "Bundle 'pythoncomplete'
+        Plugin 'Valloric/YouCompleteMe'
+        Plugin 'jmcantrell/vim-virtualenv'
+        Plugin 'majutsushi/tagbar'
+        Plugin 'tell-k/vim-autopep8'
+        Plugin 'vim-scripts/indentpython.vim--nianyang'
+        Plugin 'wsantos/vim-python-test-runner'
 
-    " Javascript
-        Bundle 'leshill/vim-json'
-        Bundle 'groenewege/vim-less'
-        Bundle 'taxilian/vim-web-indent'
+    " Cores
+        Plugin 'spf13/vim-colors'
+        Plugin 'flazz/vim-colorschemes'
+        Plugin 'shinzui/vim-idleFingers'
+        Plugin 'altercation/vim-colors-solarized'
+        Plugin 'nanotech/jellybeans.vim'
 
-    " HTML
-        Bundle 'HTML-AutoCloseTag'
-        Bundle 'ChrisYip/Better-CSS-Syntax-for-Vim'
+    " Syntax
+        Plugin 'tpope/vim-git'
+        Plugin 'solarnz/python.vim'
+        Plugin 'lepture/vim-jinja'
+        Plugin 'wavded/vim-stylus'
+        Plugin 'kchmck/vim-coffee-script'
+" }
 
-    " Misc
-        Bundle 'spf13/vim-markdown'
-        Bundle 'tpope/vim-cucumber'
-        Bundle 'Puppet-Syntax-Highlighting'
-        Bundle 'mattn/pastebin-vim'
-
+" Enviroment before plugin add {
+    " Setup Plugin Support end{
+    " All of your Plugins must be added before the following line
+        call vundle#end()            " required
+        filetype plugin indent on    " required
+    " }
 " }
 
 " General {
     set background=dark         " Assume a dark background
-    if !has('gui')
-        "set term=$TERM          " Make arrow and other keys work
-    endif
-    filetype plugin indent on   " Automatically detect file types.
     syntax on                   " syntax highlighting
     "set mouse=a                 " automatically enable mouse usage
     scriptencoding utf-8
     set fileencodings=utf-8
-    autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
-    " always switch to the current file directory.
+    highlight ColorColumn ctermbg=green guibg=#303030
+" }
 
-    " set autowrite                  " automatically write a file when leaving a modified buffer
-    set shortmess+=filmnrxoOtT      " abbrev. of messages (avoids 'hit enter')
-    set viewoptions=folds,options,cursor,unix,slash " better unix / windows compatibility
-    set virtualedit=onemore         " allow for cursor beyond last character
-    set history=1000                " Store a ton of history (default is 20)
-    set spell                       " spell checking on
-    set hidden                      " allow buffer switching without saving
+" Language specific {
+    " Python {
+        autocmd FileType python set textwidth=79
+        autocmd FileType python set colorcolumn=+1
+    " }
 
-    " Setting up the directories {
-        set backup                      " backups are nice ...
-        if has('persistent_undo')
-            set undofile                "so is persistent undo ...
-            set undolevels=1000         "maximum number of changes that can be undone
-            set undoreload=10000        "maximum number lines to save for undo on a buffer reload
-        endif
-        " Could use * rather than *.*, but I prefer to leave .files unsaved
-        au BufWinLeave *.* silent! mkview  "make vim save view (state) (folds, cursor, etc)
-        au BufWinEnter *.* silent! loadview "make vim load view (state) (folds, cursor, etc)
+    " html {
+        autocmd FileType html set matchpairs+=<:> " match, to be used with %
     " }
 " }
 
 " Vim UI {
-    let g:pastebin_api_dev_key = "764eb01a9d609190a0ac25dab80f1d9c"
-    let g:pastebin_api_user_name = "wsantos"
-    let g:pastebin_api_user_password = "dany22"
+    set hidden
     color jellybeans
-    "color solarized                 " load a colorscheme
-        "let g:solarized_termtrans=1
-        "let g:solarized_termcolors=256
-        "let g:solarized_contrast="high"
-        "let g:solarized_visibility="high"
-    set tabpagemax=15               " only show 15 tabs
-    set showmode                    " display the current mode
-
-    set cursorline                  " highlight current line
-
     if has('cmdline_info')
         set ruler                   " show the ruler
         set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%) " a ruler on steroids
@@ -151,27 +116,30 @@
         set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
     endif
 
-    set backspace=indent,eol,start  " backspace for dummies
-    set linespace=0                 " No extra spaces between rows
+    " Setting up the directories {
+        set backup                      " backups are nice ...
+        set backupdir=~/.vim/backup//
+        set directory=~/.vim/swp//
+        set undodir=~/.vim/undodir//
+        if has('persistent_undo')
+            set undofile                "so is persistent undo ...
+            set undolevels=1000         "maximum number of changes that can be undone
+            set undoreload=10000        "maximum number lines to save for undo on a buffer reload
+        endif
+        " Could use * rather than *.*, but I prefer to leave .files unsaved
+        au BufWinLeave *.* silent! mkview  "make vim save view (state) (folds, cursor, etc)
+        au BufWinEnter *.* silent! loadview "make vim load view (state) (folds, cursor, etc)
+    " }
+
     set nu                          " Line numbers on
     set showmatch                   " show matching brackets/parenthesis
     set incsearch                   " find as you type search
     set hlsearch                    " highlight search terms
-    set winminheight=0              " windows can be 0 line high
-    set ignorecase                  " case insensitive search
-    set smartcase                   " case sensitive when uc present
-    set wildmenu                    " show list instead of just completing
-    set wildmode=list:longest,full  " command <Tab> completion, list matches, then longest common part, then all.
-    set whichwrap=b,s,h,l,<,>,[,]   " backspace and cursor keys wrap to
-    set scrolljump=5                " lines to scroll when cursor leaves screen
-    set scrolloff=3                 " minimum lines to keep above and below cursor
-    set foldenable                  " auto fold code
-    set wildignore=*.swp,*.bak,*.pyc,*.class
+
     set list
     set listchars=tab:,.,trail:.,extends:#,nbsp:. " Highlight problematic whitespace
-    set nobackup
-    set noswapfile
 
+    set completeopt-=preview
 
 " }
 
@@ -182,9 +150,8 @@
     set expandtab                   " tabs are spaces, not tabs
     set tabstop=4                   " an indentation every four columns
     set softtabstop=4               " let backspace delete indent
-    "set matchpairs+=<:>                " match, to be used with % 
     set pastetoggle=<F2>           " pastetoggle (sane indentation on pastes)
-    "set comments=sl:/*,mb:*,elx:*/  " auto format comment blocks
+
     " Remove trailing whitespaces and ^M chars
     autocmd FileType c,cpp,java,php,js,python,twig,xml,yml autocmd BufWritePre <buffer> :call setline(1,map(getline(1,"$"),'substitute(v:val,"\\s\\+$","","")'))
 " }
@@ -246,7 +213,7 @@
 
     " visual shifting (does not exit Visual mode)
     vnoremap < <gv
-    vnoremap > >gv 
+    vnoremap > >gv
 
     " Fix home and end keybindings for screen, particularly on mac
     " - for some reason this fixes the arrow keys too. huh.
@@ -271,163 +238,121 @@
 " }
 
 " Plugins {
+    " YouCompleteMe {
+        let g:ycm_add_preview_to_completeopt = 0
+        let g:ycm_autoclose_preview_window_after_insertion = 1 
+        let g:ycm_key_list_select_completion = []
+        let g:ycm_key_list_previous_completion=[]
+
+        let g:ycm_collect_identifiers_from_tags_files = 1 " Let YCM read tags from Ctags file
+        let g:ycm_use_ultisnips_completer = 1 " Default 1, just ensure
+        let g:ycm_seed_identifiers_with_syntax = 1 " Completion for programming language's keyword
+        let g:ycm_complete_in_comments = 1 " Completion in comments
+        let g:ycm_complete_in_strings = 1 " Completion in string
+        nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
+    " }
+
     " ctrlp {
         set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.*~,*.pyc
         set wildignore+=*/coverage/*
         set wildignore+=*/node_modules/*
-        let g:ctrlp_regexp = 1
-
-    " }
-
-    " Misc {
-        let g:NERDShutUp=1
-        let b:match_ignorecase = 1
-    " }
-
-    " vim-powerline {
-        let g:Powerline_symbols = 'compatible'
-    "
-    " }
-
-    " Ctags {
-        set tags=./tags;/,~/.vimtags
-    " }
-
-    " AutoCloseTag {
-        " Make it so AutoCloseTag works for xml and xhtml files as well
-        au FileType xhtml,xml ru ftplugin/html/autoclosetag.vim
-        nmap <Leader>ac <Plug>ToggleAutoCloseMappings
-    " }
-
-    " EasyTags {
-        let g:easytags_cmd = 'ctags'
-    " }
-
-    " SnipMate {
-        " Setting the author var
-        " If forking, please overwrite in your .vimrc.local file
-        let g:snips_author = 'Steve Francia <steve.francia@gmail.com>'
-        " Shortcut for reloading snippets, useful when developing
-        nnoremap ,smr <esc>:exec ReloadAllSnippets()<cr>
-    " }
-
-    " NerdTree {
-        map <C-e> :NERDTreeToggle<CR>:NERDTreeMirror<CR>
-        map <leader>e :NERDTreeFind<CR>
-        nmap <leader>nt :NERDTreeFind<CR>
-
-        let NERDTreeShowBookmarks=1
-        let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
-        let NERDTreeChDirMode=0
-        let NERDTreeQuitOnOpen=1
-        let NERDTreeShowHidden=1
-        let NERDTreeKeepTreeInNewTab=1
-
-        let g:nerdtree_tabs_open_on_gui_startup=0
-    " }
-
-     " JSON {
-        nmap <leader>jt <Esc>:%!python -m json.tool<CR><Esc>:set filetype=json<CR>
-     " }
-
-     " PyMode {
-        "let g:pymode_lint_checker = "pyflakes,pep8,mccabe"
-        "let g:pymode_folding = 0
-        "let g:pymode_lint_cwindow = 0
-        "let g:pymode_lint_hold = 0
-     " }
-
-     " TagBar {
-        nnoremap <silent> <leader>tt :TagbarToggle<CR>
-     "}
-
-     " Fugitive {
-        nnoremap <silent> <leader>gs :Gstatus<CR>
-        nnoremap <silent> <leader>gd :Gdiff<CR>
-        nnoremap <silent> <leader>gc :Gcommit<CR>
-        nnoremap <silent> <leader>gb :Gblame<CR>
-        nnoremap <silent> <leader>gl :Glog<CR>
-        nnoremap <silent> <leader>gp :Git push<CR>
-     "}
-
-     " neocomplcache {
-        let g:neocomplcache_enable_at_startup = 1
-        let g:neocomplcache_enable_camel_case_completion = 1
-        let g:neocomplcache_enable_smart_case = 1
-        let g:neocomplcache_enable_underbar_completion = 1
-        let g:neocomplcache_min_syntax_length = 3
-        let g:neocomplcache_enable_auto_delimiter = 1
-
-        " AutoComplPop like behavior.
-        let g:neocomplcache_enable_auto_select = 1
-        let g:neocomplcache_disable_auto_complete = 1
-
-        " SuperTab like snippets behavior.
-        imap <expr><TAB> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>"
-
-        " Plugin key-mappings.
-        imap <C-k>     <Plug>(neocomplcache_snippets_expand)
-        smap <C-k>     <Plug>(neocomplcache_snippets_expand)
-        inoremap <expr><C-g>     neocomplcache#undo_completion()
-        inoremap <expr><C-l>     neocomplcache#complete_common_string()
-
-
-        " <CR>: close popup 
-        " <s-CR>: close popup and save indent.
-        inoremap <expr><CR>  pumvisible() ? neocomplcache#close_popup() : "\<CR>"
-        inoremap <expr><s-CR> pumvisible() ? neocomplcache#close_popup() "\<CR>" : "\<CR>" 
-        " <TAB>: completion.
-        inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-
-        " <C-h>, <BS>: close popup and delete backword char.
-        inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
-        inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
-        inoremap <expr><C-y>  neocomplcache#close_popup()
-        inoremap <expr><C-e>  neocomplcache#cancel_popup()
-
-        " Enable omni completion.
-        autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-        autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-        autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-        "autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-        autocmd FileType python setlocal completeopt+=longest,preview
-        autocmd FileType python setlocal completeopt-=preview
-        autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-        " Enable heavy omni completion.
-        if !exists('g:neocomplcache_omni_patterns')
-            let g:neocomplcache_omni_patterns = {}
+        "let g:ctrlp_regexp = 1
+        if executable('ag')
+            set grepprg=ag\ --nogroup\ --nocolor
+            let g:ctrlp_user_command = 'ag -U %s -l --nocolor -g ""  |grep -Ev "\.(pyc|png|jpg|jpeg|gif)$"|grep -Ev "[\/]ckeditor"|grep -Ev "[\/]tiny_mce"'
         endif
-        let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
-        "autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
-        let g:neocomplcache_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-        let g:neocomplcache_omni_patterns.c = '\%(\.\|->\)\h\w*'
-        let g:neocomplcache_omni_patterns.cpp = '\h\w*\%(\.\|->\)\h\w*\|\h\w*::'
+        let g:ctrlp_match_func = {'match' : 'matcher#cmatch' }
+        let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
 
-        " For snippet_complete marker.
-        if has('conceal')
-            set conceallevel=2 concealcursor=i
-        endif
 
-     " }
+        " Setup some default ignores
+        let g:ctrlp_custom_ignore = {
+          \ 'dir':  '\v[\/](\.(git|hg|svn)|\_site)$',
+          \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
+        \}
+
+        " Use the nearest .git directory as the cwd
+        " This makes a lot of sense if you are working on a project that is in version
+        " control. It also supports works with .svn, .hg, .bzr.
+        let g:ctrlp_working_path_mode = 'r'
+
+        " Use a leader instead of the actual named binding
+        nmap <leader>p :CtrlP<cr>
+
+        " Easy bindings for its various modes
+        nmap <leader>bb :CtrlPBuffer<cr>
+        nmap <leader>bm :CtrlPMixed<cr>
+        nmap <leader>bs :CtrlPMRU<cr>
+    " }
+
+    " buffgator {
+        " Use the right side of the screen
+        let g:buffergator_viewport_split_policy = 'R'
+
+        " I want my own keymappings...
+        let g:buffergator_suppress_keymaps = 1
+
+        " Looper buffers
+        "let g:buffergator_mru_cycle_loop = 1
+
+        " Go to the previous buffer open
+        nmap <leader>jj :BuffergatorMruCyclePrev<cr>
+
+        " Go to the next buffer open
+        nmap <leader>kk :BuffergatorMruCycleNext<cr>
+
+        " View the entire list of buffers open
+        nmap <leader>bl :BuffergatorOpen<cr>
+
+        " Shared bindings from Solution #1 from earlier
+        nmap <leader>T :enew<cr>
+        nmap <leader>bq :bp <BAR> bd #<cr>
+    " }
+
+    " airline {
+        let g:airline#extensions#tabline#enabled = 1
+        let g:airline#extensions#tagbar#enabled = 0
+        let g:airline_powerline_fonts = 0
+        let g:airline_left_sep = '▶'
+        let g:airline_right_sep = '◀'
+        let g:airline_theme='luna'
+        let g:airline#extensions#branch#displayed_head_limit = 8
+    " }
+
+    " syntastic {
+        let g:syntastic_error_symbol = "✗"
+        let g:syntastic_warning_symbol = "⚠"
+    " }
+    
+    " vim-python-test-runner {
+        nnoremap<Leader>da :DjangoTestApp<CR>
+        nnoremap<Leader>df :DjangoTestFile<CR>
+        nnoremap<Leader>dc :DjangoTestClass<CR>
+        nnoremap<Leader>dm :DjangoTestMethod<CR>
+        nnoremap<Leader>nf :NosetestFile<CR>
+        nnoremap<Leader>nc :NosetestClass<CR>
+        nnoremap<Leader>nm :NosetestMethod<CR>
+        nnoremap<Leader>nb :NosetestBaseMethod<CR>
+        nnoremap<Leader>rr :RerunLastTests<CR>
+    " }
+
 
 " }
 
-
-"if &term =~ "xterm"
-    ""256 color --
-    "let &t_Co=256
-    "" restore screen after quitting
-    "set t_ti=ESC7ESC[rESC[?47h t_te=ESC[?47lESC8
-    "if has("terminfo")
-        "let &t_Sf="\ESC[3%p1%dm"
-        "let &t_Sb="\ESC[4%p1%dm"
-    "else
-        "let &t_Sf="\ESC[3%dm"
-        "let &t_Sb="\ESC[4%dm"
-    "endif
-"endif
-
+if &term =~ "xterm"
+  " 256 colors
+  let &t_Co = 256
+  " restore screen after quitting
+  let &t_ti = "\<Esc>7\<Esc>[r\<Esc>[?47h"
+  let &t_te = "\<Esc>[?47l\<Esc>8"
+  if has("terminfo")
+    let &t_Sf = "\<Esc>[3%p1%dm"
+    let &t_Sb = "\<Esc>[4%p1%dm"
+  else
+    let &t_Sf = "\<Esc>[3%dm"
+    let &t_Sb = "\<Esc>[4%dm"
+  endif
+endif
 
 " Add the virtualenv's site-packages to vim path
 if has('python')
@@ -442,4 +367,3 @@ if 'VIRTUAL_ENV' in os.environ:
     execfile(activate_this, dict(__file__=activate_this))
 EOF
 endif
-

@@ -28,14 +28,14 @@ setlocal colorcolumn=
 setlocal comments=sO:\"\ -,mO:\"\ \ ,eO:\"\",:\"
 setlocal commentstring=\"%s
 setlocal complete=.,w,b,u,t,i
-setlocal concealcursor=i
-setlocal conceallevel=2
-setlocal completefunc=neocomplcache#manual_complete
+setlocal concealcursor=
+setlocal conceallevel=0
+setlocal completefunc=youcompleteme#Complete
 setlocal nocopyindent
 setlocal cryptmethod=
 setlocal nocursorbind
 setlocal nocursorcolumn
-setlocal cursorline
+setlocal nocursorline
 setlocal define=
 setlocal dictionary=
 setlocal nodiff
@@ -59,8 +59,8 @@ setlocal formatexpr=
 setlocal formatoptions=croql
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
 setlocal grepprg=
-setlocal iminsert=0
-setlocal imsearch=0
+setlocal iminsert=2
+setlocal imsearch=2
 setlocal include=
 setlocal includeexpr=
 setlocal indentexpr=GetVimIndent()
@@ -70,6 +70,7 @@ setlocal iskeyword=@,48-57,_,192-255,#
 setlocal keywordprg=
 setlocal nolinebreak
 setlocal nolisp
+setlocal lispwords=
 setlocal list
 setlocal nomacmeta
 setlocal makeprg=
@@ -93,11 +94,11 @@ setlocal shiftwidth=4
 setlocal noshortname
 setlocal nosmartindent
 setlocal softtabstop=4
-setlocal spell
+setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\	\ ]\\+
 setlocal spellfile=
 setlocal spelllang=en
-setlocal statusline=%!Pl#Statusline(0,1)
+setlocal statusline=%!airline#statusline(1)
 setlocal suffixesadd=
 setlocal swapfile
 setlocal synmaxcol=3000
@@ -109,18 +110,18 @@ setlocal tags=
 setlocal textwidth=78
 setlocal thesaurus=
 setlocal undofile
+setlocal undolevels=-123456
 setlocal nowinfixheight
-setlocal winfixwidth
+setlocal nowinfixwidth
 setlocal nowrap
 setlocal wrapmargin=0
 silent! normal! zE
-let s:l = 21 - ((20 * winheight(0) + 25) / 50)
+let s:l = 320 - ((29 * winheight(0) + 28) / 57)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-21
-normal! 0
-lcd ~/
+320
+normal! 05|
 let &so = s:so_save | let &siso = s:siso_save
 doautoall SessionLoadPost
 " vim: set ft=vim :

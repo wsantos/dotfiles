@@ -6,6 +6,9 @@
 	ci = commit
 	co = checkout
 	br = branch
+    # Delete all branches that have been pulled in to master
+    delete-merged-branches = "!git co master && git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
+    pr = "!f() { git fetch -fu $1 refs/pull/$2/head:pr/$2; git checkout pr/$2; } ; f"
 [user]
 	name = Waldecir Santos
 	email = waldecir@gmail.com
@@ -15,12 +18,20 @@
 	interactive = auto
 	status = auto
 [merge]
-	tool = kdiff3
+	tool = vimdiff
 [difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	cmd = /Applications/kdiff3.app/Contents/MacOS/kdiff3 \"$LOCAL\" \"$REMOTE\"
 	path = 
 [mergetool "sourcetree"]
-	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	cmd = /Applications/kdiff3.app/Contents/MacOS/kdiff3 \"$BASE\" \"$LOCAL\" \"$REMOTE\" -o \"$MERGED\"
 	trustExitCode = true
 [credential]
 	helper = osxkeychain
+[filter "media"]
+	required = true
+	clean = git media clean %f
+	smudge = git media smudge %f
+[filter "hawser"]
+	clean = git hawser clean %f
+	smudge = git hawser smudge %f
+	required = true

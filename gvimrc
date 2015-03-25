@@ -5,7 +5,7 @@ set autoread
 nmap <leader>w :w!<cr>
 
 "Nerd Tree commands and options
-map <Leader>, :NERDTreeToggle<cr>
+"map <Leader>, :NERDTreeToggle<cr>
 
 "fix label name
 set guitablabel="%t%m"   " :h statusline
@@ -42,7 +42,6 @@ map! <D-9> <C-O>:tabn 9<CR>
 
 set visualbell
 
-set background=dark
 "let g:solarized_termtrans=1
 "let g:solarized_termcolors=256
 "let g:solarized_contrast="high"
