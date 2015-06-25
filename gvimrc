@@ -49,9 +49,9 @@ set visualbell
 "colorscheme idleFingers
 "let g:zenburn_force_dark_Background=1
 " set guifont=ProggyCleanTTSZ:h16
-set guifont=Inconsolata:h14
+"set guifont=Inconsolata:h14
 set background=dark
-"set noantialias
+set noantialias
 
 
 

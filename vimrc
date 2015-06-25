@@ -51,6 +51,9 @@
         Plugin 'vim-scripts/indentpython.vim--nianyang'
         Plugin 'wsantos/vim-python-test-runner'
 
+    " Golang
+        Plugin 'fatih/vim-go'
+
     " Cores
         Plugin 'spf13/vim-colors'
         Plugin 'flazz/vim-colorschemes'
@@ -81,6 +84,8 @@
     scriptencoding utf-8
     set fileencodings=utf-8
     highlight ColorColumn ctermbg=green guibg=#303030
+    set cursorline
+    hi CursorLine term=bold cterm=bold guibg=Grey20
 " }
 
 " Language specific {
@@ -103,6 +108,8 @@
         set showcmd                 " show partial commands in status line and
                                     " selected characters/lines in visual mode
     endif
+
+    set guifont=ProggySquare:h11
 
     if has('statusline')
         set laststatus=2
@@ -335,6 +342,14 @@
         nnoremap<Leader>nb :NosetestBaseMethod<CR>
         nnoremap<Leader>rr :RerunLastTests<CR>
     " }
+    
+    " vim-go {
+        let g:go_highlight_functions = 1
+        let g:go_highlight_methods = 1
+        let g:go_highlight_structs = 1
+        let g:go_highlight_operators = 1
+        let g:go_highlight_build_constraints = 1    
+    " } 
 
 
 " }
