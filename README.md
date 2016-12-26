@@ -5,7 +5,7 @@
 1. Install zsh
 
 ```
-brew install zsh zsh-completions
+brew install zsh zsh-completions gnupg gnupg2
 ```
 
 2. Install prezto
